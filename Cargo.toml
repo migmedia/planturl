@@ -1,0 +1,19 @@
+[package]
+name = "planturl"
+version = "0.1.0"
+edition = "2018"
+authors = ["Micha Glave <coding@migmedia.de"]
+license = "MIT"
+categories = ["command-line-utilities"]
+description = """
+A plantuml-file to server-url-encoder.
+"""
+
+[dependencies]
+deflate = "0.9.1"
+structopt = "0.3.22"
+
+
+[[bin]]
+name = "planturl"
+path = "src/main.rs"
