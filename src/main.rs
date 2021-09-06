@@ -13,7 +13,7 @@ fn get_char_for_index(index: u8) -> Option<char> {
     plantuml64.get(index as usize).map(|b: &u8| *b as char)
 }
 
-pub fn encode(data: &[u8]) -> String {
+fn encode(data: &[u8]) -> String {
     data.chunks(3)
         .map(split)
         .flat_map(encode_chunk)
@@ -40,13 +40,26 @@ fn split(chunk: &[u8]) -> Vec<u8> {
 }
 
 fn encode_chunk(chunk: Vec<u8>) -> Vec<char> {
-    let mut out = vec![' '; 4];
+    let mut out = vec!['0'; 4];
     for i in 0..chunk.len() {
         if let Some(chr) = get_char_for_index(chunk[i]) {
             out[i] = chr;
         }
     }
     out
+}
+
+fn cleanup_input(data: &str) -> String {
+    let pattern: &[_] = &['\n', ' ', '\t'];
+    data.replace("\r\n", "\n")
+        .trim_matches(pattern)
+        .replace("@startuml\n", "")
+        .replace("\n@enduml", "")
+}
+
+pub fn encode_deflate(data: &str) -> String {
+    let compressed = deflate_bytes_conf(cleanup_input(data).as_bytes(), Compression::Best);
+    encode(compressed.as_slice())
 }
 
 #[derive(StructOpt, Debug)]
@@ -78,18 +91,37 @@ fn main() {
             .read_to_string(&mut input)
             .expect("error reading stdin");
     }
-    let compressed = deflate_bytes_conf(input.as_bytes(), Compression::Best);
+    let url = encode_deflate(&*input);
     let encoded_diagram = if opt.img {
-        format!(
-            "<img src=\"{}{}\" >",
-            &opt.url,
-            encode(compressed.as_slice()).trim()
-        )
+        format!("<img src=\"{}{}\" >", &opt.url, url)
     } else {
-        encode(compressed.as_slice()).trim().into()
+        url
     };
 
     io::stdout()
         .write_all(encoded_diagram.as_bytes())
         .expect("error writing stdout");
+}
+
+#[cfg(test)]
+mod should {
+    use crate::encode_deflate;
+
+    #[test]
+    fn compress_example() {
+        let input = "Bob -> Alice : hello";
+        assert_eq!("SyfFKj2rKt3CoKnELR1Io4ZDoSa70000", encode_deflate(input));
+    }
+
+    #[test]
+    fn ignore_trailing_whitespace() {
+        let input = "  \n@startuml\nBob -> Alice : hello\n@enduml\n\n";
+        assert_eq!("SyfFKj2rKt3CoKnELR1Io4ZDoSa70000", encode_deflate(input));
+    }
+
+    #[test]
+    fn ignore_crlf() {
+        let input = "@startuml\r\nBob -> Alice : hello\r\n@enduml\r\n";
+        assert_eq!("SyfFKj2rKt3CoKnELR1Io4ZDoSa70000", encode_deflate(input));
+    }
 }
