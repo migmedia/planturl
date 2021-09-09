@@ -1,6 +1,6 @@
 [package]
 name = "planturl"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2018"
 authors = ["Micha Glave <coding@migmedia.de"]
 license = "Apache-2.0 OR MIT AND Zlib"
@@ -12,8 +12,9 @@ A plantuml-file to server-url-encoder.
 """
 
 [dependencies]
-structopt = { version = "0.3", default-features = false }
-deflate = { version = "0.9", default-features = false }
+structopt = { version = "0.3.23", default-features = false }
+deflate = { version = "0.9.1", default-features = false }
+strum = { version = "0.21.0", features = ["derive"] }
 
 [[bin]]
 name = "planturl"
