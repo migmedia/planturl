@@ -68,6 +68,8 @@ pub fn cleanup_input(data: &str) -> String {
         .trim_matches(pattern)
         .replace("@startuml\n", "")
         .replace("\n@enduml", "")
+        .trim_matches(pattern)
+        .to_string()
 }
 
 /// Encodes in HEX as described in
@@ -97,13 +99,18 @@ mod should {
         );
     }
 
-    fn encode_deflate() ->
-        let input = "@startuml\nAlice -> Bob: Authentication Request\nBob --> Alice: \
-        Authentication Response\n@enduml";
+    /// The example from [PlantUML Text Encoding - Compression](https://plantuml.com/en/text-encoding#82af841589057aa8)
+    ///
+    /// should give "Syp9J4vLqBLJSCfFib9mB2t9ICqhoKnEBCdCprC8IYqiJIqkuGBAAUW2rO0LOr5LN92VLvpA1G00"
+    /// but it differs at the last 6-chars.
+    #[test]
+    fn encode_deflate() {
+        let input = "@startuml\n\nAlice -> Bob: Authentication Request\nBob --> Alice: \
+        Authentication Response\n\n@enduml\n";
         assert_eq!(
-            "Syp9J4vLqBLJSCfFib9mB2t9ICqhoKnEBCdCprC8IYqiJIqkuGBAAUW2rO0LOr5LN92VLvpA1G00",
+            "Syp9J4vLqBLJSCfFib9mB2t9ICqhoKnEBCdCprC8IYqiJIqkuGBAAUW2rO0LOr5LN92VLvmA0000",
             encode(&deflate::deflate_bytes_conf(
-                input.as_bytes(),
+                cleanup_input(input).as_bytes(),
                 deflate::Compression::Best
             ))
         );
@@ -111,7 +118,7 @@ mod should {
 
     #[test]
     fn ignore_trailing_whitespace() {
-        let input = "  \n@startuml\nBob -> Alice : hello\n@enduml\n\n";
+        let input = "  \n@startuml\nBob -> Alice : hello\n\n@enduml\n\n";
         assert_eq!("Bob -> Alice : hello", cleanup_input(input));
     }
 
