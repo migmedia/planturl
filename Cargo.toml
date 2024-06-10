@@ -1,6 +1,6 @@
 [package]
 name = "planturl"
-version = "0.4.1"
+version = "0.4.2"
 edition = "2021"
 authors = ["Micha Glave <coding@migmedia.de"]
 license = "Apache-2.0 OR MIT AND Zlib"
@@ -18,10 +18,10 @@ build-binary = ["anyhow", "clap", "deflate", "reqwest"]
 path = "src/lib.rs"
 
 [dependencies]
-anyhow = { version = "1.0.66", optional = true }
-clap = { version = "4.0.26", features = [ "derive" ], optional = true }
+anyhow = { version = "1.0.86", optional = true }
+clap = { version = "4.5.7", features = [ "derive" ], optional = true }
 deflate = { version = "1.0.0", default-features = false, optional = true }
-reqwest = { version = "0.11.27", features = ["blocking", "deflate", "brotli"], optional = true }
+reqwest = { version = "0.12.4", features = ["blocking", "deflate", "brotli"], optional = true }
 
 [dev-dependencies]
 deflate = { version = "1", default-features = false }
