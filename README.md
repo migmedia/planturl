@@ -43,7 +43,7 @@ ENABLED = true
 # List of file extensions that should be rendered by an external command
 FILE_EXTENSIONS = .puml,.uml,.plantuml
 # External command to render all matching extensions
-RENDER_COMMAND = "/usr/bin/planturl --base-url https://www.plantuml.com/plantuml --img"
+RENDER_COMMAND = "/path/to/planturl --base-url https://www.plantuml.com/plantuml --img"
 # Don't pass the file on STDIN, pass the filename as argument instead.
 IS_INPUT_FILE = false
 
