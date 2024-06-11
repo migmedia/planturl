@@ -4,13 +4,14 @@ A [plantuml](https://plantuml.com/) file to server-url-encoder. For use with [Gi
 documentation tool.
 Encodes plantuml-code-snippets as URL usable for the [PlantUML-Service](http://www.plantuml.com/plantuml/) or a
 self-hosted clone as described in [PlantUML Text Encoding](https://plantuml.com/pte).
+Can return a link, a html-img-snippet or a downloaded image-file for a given PlantUML-snippet.
 
 ## Install
 
 check out this project.
 
 ```
-cargo install --features=build-binary --path=<path to this project> 
+cargo install --features=build-binary --path=<path to this project>
 ```
 
 ## Usage
@@ -48,4 +49,3 @@ RENDER_COMMAND = "/path/to/planturl --base-url https://www.plantuml.com/plantuml
 IS_INPUT_FILE = false
 
 ```
-

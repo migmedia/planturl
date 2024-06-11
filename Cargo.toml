@@ -1,11 +1,12 @@
 [package]
 name = "planturl"
-version = "0.4.3"
+version = "0.4.4"
 edition = "2021"
 authors = ["Micha Glave <coding@migmedia.de"]
 license = "Apache-2.0 OR MIT AND Zlib"
-categories = ["command-line-utilities"]
+categories = ["command-line-utilities", "development-tools", "visualization"]
 keywords = ["graph", "plantuml"]
+repository = "https://github.com/migmedia/planturl"
 homepage = "https://github.com/migmedia/planturl"
 description = """
 A plantuml-file to server-url-encoder and downloader.
