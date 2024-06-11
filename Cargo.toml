@@ -1,6 +1,6 @@
 [package]
 name = "planturl"
-version = "0.4.2"
+version = "0.4.3"
 edition = "2021"
 authors = ["Micha Glave <coding@migmedia.de"]
 license = "Apache-2.0 OR MIT AND Zlib"
@@ -35,7 +35,7 @@ required-features = ["build-binary"]
 strip = "symbols"
 
 [package.metadata.binstall]
-pkg-url = "{ repo }/releases/download/{ version }/planturl-{ target }-{ version }.{ archive-format }"
+pkg-url = "{ repo }/releases/download/v{ version }/planturl-{ target }-v{ version }.{ archive-format }"
 
 [package.metadata.binstall.overrides.x86_64-pc-windows-msvc]
 pkg-fmt = "zip"
